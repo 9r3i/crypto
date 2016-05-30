@@ -35,7 +35,7 @@
 namespace deema;
 
 class crypto{
-  public $version='1.1';
+  public $version='1.2';
   public $methods;
   public $errors=array();
   private $method;
