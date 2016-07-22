@@ -22,7 +22,7 @@
  * $cr->encrypt($string,$key);
  * $cr->decrypt($string,$key);
  * 
- * $method -> integer from 0 to 181 as methods are got by $cr->methods;
+ * $method -> string of method, as methods are got by $cr->methods;
  * $encode -> boolean, encoded by base64_encode function
  * $string -> string, raw binary string to encrypt or decrypt
  * $key    -> string of personal key or password
@@ -30,9 +30,6 @@
  * PS: this class can use OPENSSL_ZERO_PADDING or OPENSSL_RAW_DATA
  *     but i prefer OPENSSL_RAW_DATA in this case 
  */
-
-/* deema namespace */
-namespace deema;
 
 class crypto{
   public $version='1.2';
