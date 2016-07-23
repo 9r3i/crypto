@@ -9,3 +9,22 @@ This is a class, an openssl encryption, a simple one. Hope it can help you for e
 To use this class, please remind the license. Thank you.
 
 --9r3i
+
+
+# Usage
+```php
+$method = 'AES-256-XTS'; // what methods are available using $cr->methods; as version 1.1 become a string
+$encode = true;
+$string = file_get_contents(__FILE__); // get content to be encrypted
+$key = 'my_password'; // a password key
+
+/* call the class */
+$cr = new \crypto($method,$encode);
+$cr->encrypt($string,$key); // encrypting
+$cr->decrypt($string,$key); // decrypting
+/* additional */
+$cr->check(); // check server compatiblity as version 1.2
+$cr->setMethod('AES-192-CBC'); // set new method as version 1.3
+$cr->encrypt($string,$key); // encrypting with another method
+```
+
