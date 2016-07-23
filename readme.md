@@ -1,11 +1,11 @@
 # crypto
 
 [![Author](https://img.shields.io/badge/author-9r3i-lightgrey.svg)](https://github.com/9r3i "9r3i")
-[![License](https://img.shields.io/github/license/9r3i/dixie.svg)](https://github.com/9r3i/dixie/blob/master/license.txt "License")
-[![Forks](https://img.shields.io/github/forks/9r3i/dixie.svg)](https://github.com/9r3i/dixie/network "Forks")
-[![Stars](https://img.shields.io/github/stars/9r3i/dixie.svg)](https://github.com/9r3i/dixie/stargazers "Stars")
-[![Issues](https://img.shields.io/github/issues/9r3i/dixie.svg)](https://github.com/9r3i/dixie/issues "Issues")
-[![Releases](https://img.shields.io/github/release/9r3i/dixie.svg)](https://github.com/9r3i/dixie/releases "Releases")
+[![License](https://img.shields.io/github/license/9r3i/crypto.svg)](https://github.com/9r3i/crypto/blob/master/license.txt "License")
+[![Forks](https://img.shields.io/github/forks/9r3i/crypto.svg)](https://github.com/9r3i/crypto/network "Forks")
+[![Stars](https://img.shields.io/github/stars/9r3i/crypto.svg)](https://github.com/9r3i/crypto/stargazers "Stars")
+[![Issues](https://img.shields.io/github/issues/9r3i/crypto.svg)](https://github.com/9r3i/crypto/issues "Issues")
+[![Releases](https://img.shields.io/github/release/9r3i/crypto.svg)](https://github.com/9r3i/crypto/releases "Releases")
 [![Donate](https://img.shields.io/badge/paypal-donate-yellowgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QZKZVZPBAC538 "Donate")
 
 An openssl encryption
