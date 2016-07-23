@@ -1,6 +1,6 @@
 <?php
 /* crypto
- * ~ openssl encryption
+ * ~ an openssl encryption
  * class-uri : https://github.com/9r3i/crypto
  * license   : https://github.com/9r3i/crypto/blob/master/license.txt
  * 
@@ -21,6 +21,8 @@
  *     to make sure the functions are checked
  *   + add function setMethod, getMethod and setEncode
  *     there is some reason for executing in the middle of called class
+ * ~ version 1.3.1 - july 23rd 2016
+ *   + fix function setMethod as to get through cipher methods
  * 
  * 
  * Usage:
@@ -41,7 +43,7 @@
  */
 
 class crypto{
-  public $version='1.3';
+  public $version='1.3.1';
   public $methods;
   public $errors=array();
   private $method;
@@ -59,7 +61,7 @@ class crypto{
     return $this->method;
   }
   public function setMethod($i=null){
-    $this->method=isset($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
+    $this->method=isset($i)&&in_array($i,\openssl_get_cipher_methods())?$i:'AES-128-CBC';
     return true;
   }
   public function setEncode($e=false){
