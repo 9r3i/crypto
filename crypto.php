@@ -1,5 +1,5 @@
 <?php
-/* crypto
+/* 9r3i\crypto
  * ~ an openssl encryption
  * class-uri : https://github.com/9r3i/crypto
  * license   : https://github.com/9r3i/crypto/blob/master/license.txt
@@ -23,6 +23,11 @@
  *     there is some reason for executing in the middle of called class
  * ~ version 1.3.1 - july 23rd 2016
  *   + fix function setMethod as to get through cipher methods
+ * ~ version 1.3.2 - april 21st 2017
+ *   + add function getMethods
+ *   + change version to constant
+ *   + change methods as private property
+ *   + change function check as private function
  * 
  * 
  * Usage:
@@ -43,32 +48,60 @@
  */
 
 class crypto{
-  public $version='1.3.1';
-  public $methods;
-  public $errors=array();
-  private $method;
-  private $encode;
-  private $checked=false;
+  const version='1.3.2';      // constant of class version
+  public $errors;             // array of errors
+  private $methods;           // array of available methods
+  private $method;            // string of encryption method; default: AES-128-CBC
+  private $encode;            // bool of encode; default: false
+  private $checked=false;     // bool of system compatibility
   function __construct($i=null,$e=false){
+    $this->errors=array();
     if($this->check()){
       $this->methods=\openssl_get_cipher_methods();
-      $this->method=isset($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
+      $this->method=is_string($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
       $this->encode=is_bool($e)&&$e?true:false;
       $this->checked=true;
-    }
+    }return $this;
+  }
+  public function getMethods(){
+    return $this->methods;
   }
   public function getMethod($i=null){
     return $this->method;
   }
   public function setMethod($i=null){
-    $this->method=isset($i)&&in_array($i,\openssl_get_cipher_methods())?$i:'AES-128-CBC';
+    $this->method=is_string($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
     return true;
   }
   public function setEncode($e=false){
     $this->encode=is_bool($e)&&$e?true:false;
     return true;
   }
-  public function check(){
+  public function encrypt($s=null,$c=null){
+    if($this->checked&&is_string($s)){
+      $c=is_string($c)?$c:null;
+      $n=\openssl_cipher_iv_length($this->method);
+      $o=\openssl_random_pseudo_bytes($n);
+      $t=\openssl_encrypt((string)$s,$this->method,$c,OPENSSL_RAW_DATA,$o);
+      return $this->encode?\base64_encode($o.$t):$o.$t;
+    }return false;
+  }
+  public function decrypt($s=null,$c=null){
+    if($this->checked&&is_string($s)){
+      if($this->encode){try{
+        $s=\base64_decode((string)$s,true);
+        if($s===false){throw new \Exception('Decryption failure');}
+      }catch(\Exception $e){
+        return false;
+      }}
+      $c=is_string($c)?$c:null;
+      $n=\openssl_cipher_iv_length($this->method);
+      $o=\mb_substr((string)$s,0,$n,'8bit');
+      $t=\mb_substr((string)$s,$n,null,'8bit');
+      return \openssl_decrypt($t,$this->method,$c,OPENSSL_RAW_DATA,$o);
+    }return false;
+  }
+  private function check(){
     $r=true;
     $f=array(
       'openssl_get_cipher_methods',
@@ -87,29 +120,6 @@ class crypto{
     if(!defined('OPENSSL_RAW_DATA')){
       $this->errors[]='OPENSSL_RAW_DATA is not defined';
       $r=false;
-    }
-    return $r;
-  }
-  public function encrypt($s=null,$c=null){
-    if($this->checked){
-      $n=\openssl_cipher_iv_length($this->method);
-      $o=\openssl_random_pseudo_bytes($n);
-      $t=\openssl_encrypt((string)$s,$this->method,$c,OPENSSL_RAW_DATA,$o);
-      return $this->encode?\base64_encode($o.$t):$o.$t;
-    }return false;
-  }
-  public function decrypt($s=null,$c=null){
-    if($this->checked){
-      if($this->encode){try{
-        $s=\base64_decode((string)$s,true);
-        if($s===false){throw new \Exception('Decryption failure');}
-      }catch(\Exception $e){
-        return false;
-      }}
-      $n=\openssl_cipher_iv_length($this->method);
-      $o=\mb_substr((string)$s,0,$n,'8bit');
-      $t=\mb_substr((string)$s,$n,null,'8bit');
-      return \openssl_decrypt($t,$this->method,$c,OPENSSL_RAW_DATA,$o);
-    }return false;
+    }return $r;
   }
 }
