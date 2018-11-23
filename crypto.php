@@ -28,7 +28,9 @@
  *   + change version to constant
  *   + change methods as private property
  *   + change function check as private function
- * 
+ * ~ version 1.3.3 - november 23rd 2018
+ *   + default change to aes-128-cbc (be lower-cased)
+ *   + all methods change to lower case as php version 7.2.x
  * 
  * Usage:
  * $cr = new \crypto($method,$encode);
@@ -48,17 +50,19 @@
  */
 
 class crypto{
-  const version='1.3.2';      // constant of class version
+  const version='1.3.3';      // constant of class version
   public $errors;             // array of errors
   private $methods;           // array of available methods
-  private $method;            // string of encryption method; default: AES-128-CBC
+  private $method;            // string of encryption method; default: aes-128-cbc
   private $encode;            // bool of encode; default: false
   private $checked=false;     // bool of system compatibility
   function __construct($i=null,$e=false){
     $this->errors=array();
     if($this->check()){
       $this->methods=\openssl_get_cipher_methods();
-      $this->method=is_string($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
+      $this->method=is_string($i)
+        &&in_array(strtolower($i),$this->methods)
+        ?strtolower($i):'aes-128-cbc';
       $this->encode=is_bool($e)&&$e?true:false;
       $this->checked=true;
     }return $this;
@@ -70,7 +74,9 @@ class crypto{
     return $this->method;
   }
   public function setMethod($i=null){
-    $this->method=is_string($i)&&in_array($i,$this->methods)?$i:'AES-128-CBC';
+    $this->method=is_string($i)
+      &&in_array(strtolower($i),$this->methods)
+      ?strtolower($i):'aes-128-cbc';
     return true;
   }
   public function setEncode($e=false){
